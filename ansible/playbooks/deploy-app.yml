@@ -1,0 +1,91 @@
+---
+- name: Deploy QR Forge Application
+  hosts: qr_forge_servers
+  become: yes
+  vars:
+    app_dir: /opt/qr-forge
+    repo_url: "https://github.com/abdulazeez9/qr-forge.git"
+  
+  tasks:
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Clone QR Forge repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}/app"
+        version: main
+        force: yes
+      become_user: ubuntu
+
+    - name: Create docker directory
+      file:
+        path: "{{ app_dir }}/docker"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Copy Dockerfile
+      copy:
+        src: ../../docker/Dockerfile
+        dest: "{{ app_dir }}/docker/Dockerfile"
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Copy nginx.conf
+      copy:
+        src: ../../docker/nginx.conf
+        dest: "{{ app_dir }}/docker/nginx.conf"
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Copy docker-compose.yml
+      copy:
+        src: ../../docker/docker-compose.yml
+        dest: "{{ app_dir }}/docker-compose.yml"
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Copy .dockerignore
+      copy:
+        src: ../../docker/.dockerignore
+        dest: "{{ app_dir }}/.dockerignore"
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Stop existing containers
+      community.docker.docker_compose:
+        project_src: "{{ app_dir }}"
+        state: absent
+      ignore_errors: yes
+
+    - name: Build and start Docker containers
+      community.docker.docker_compose:
+        project_src: "{{ app_dir }}"
+        build: yes
+        state: present
+      become_user: ubuntu
+
+    - name: Wait for application to be ready
+      uri:
+        url: "http://localhost:80/health"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 10
+      delay: 5
+
+    - name: Display deployment status
+      debug:
+        msg: "QR Forge deployed successfully and is running on port 80"
+
+    - name: Show running containers
+      command: docker ps
+      register: docker_ps
+      changed_when: false
+
+    - name: Display running containers
+      debug:
+        msg: "{{ docker_ps.stdout_lines }}"
