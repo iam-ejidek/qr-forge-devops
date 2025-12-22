@@ -40,12 +40,17 @@
         state: present
         update_cache: yes
 
-    - name: Install Docker Python library
+    - name: Install Docker Python library for Ansible
       pip:
         name:
           - docker
           - docker-compose
         state: present
+
+    - name: Install Ansible Docker collection
+      command: ansible-galaxy collection install community.docker
+      become: no
+      ignore_errors: yes
 
     - name: Add ubuntu user to docker group
       user:
@@ -67,6 +72,15 @@
     - name: Display Docker version
       debug:
         msg: "Docker installed: {{ docker_version.stdout }}"
+
+    - name: Verify Docker Compose plugin
+      command: docker compose version
+      register: compose_version
+      changed_when: false
+
+    - name: Display Docker Compose version
+      debug:
+        msg: "Docker Compose installed: {{ compose_version.stdout }}"
 
     - name: Create app directory
       file:
