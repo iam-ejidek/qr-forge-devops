@@ -453,7 +453,7 @@ This DevOps pipeline is open source. The QR Forge application maintains its own 
 
 **Abdulhamid Ejiwumi**
 - GitHub: [@iam-ejidek](https://github.com/iam-ejidek)
-- LinkedIn: [Your Profile](https://linkedin.com/in/abdulhamidejiwumi)
+- LinkedIn: [abdulhamidejiwumi](https://linkedin.com/in/abdulhamidejiwumi)
 
 ## 🙏 Acknowledgments
 
