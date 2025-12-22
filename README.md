@@ -342,7 +342,7 @@ docker-compose up -d --build
 
 ## 🧹 Cleanup
 
-### Destroy All Resources
+### To Destroy All Resources
 
 ```bash
 cd terraform
@@ -440,7 +440,7 @@ df -h
 
 ## 🤝 Contributing
 
-This is a learning project for DevOps portfolio. Feel free to:
+This is a learning project for my DevOps portfolio. Feel free to:
 - Fork and modify for your needs
 - Add improvements and submit PRs
 - Use as reference for your own projects
@@ -451,9 +451,9 @@ This DevOps pipeline is open source. The QR Forge application maintains its own 
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+**Abdulhamid Ejiwumi**
+- GitHub: [@iam-ejidek](https://github.com/iam-ejidek)
+- LinkedIn: [Your Profile](https://linkedin.com/in/abdulhamidejiwumi)
 
 ## 🙏 Acknowledgments
 
